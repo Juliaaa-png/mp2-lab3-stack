@@ -102,4 +102,9 @@ public:
 		}
 		return mas[size];
 	}
+
+	void Clear()
+	{
+		size = -1;
+	}
 };
