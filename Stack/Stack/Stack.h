@@ -105,6 +105,10 @@ public:
 
 	void Clear()
 	{
-		size = -1;
+		size = 0;
+	}
+	int Size()
+	{
+		return size;
 	}
 };

@@ -17,11 +17,20 @@ public:
 		infix = "";
 		postfix = "";
 	}
-	void SetFormula(string str)
+	Calculator(const Calculator& calc) 
 	{
-		formula = str;
+		infix = calc.infix;
+		postfix = calc.postfix;
+		st_c = calc.st_c;
+		st_d = calc.st_d;
 	}
-	bool CheckBrackets();
-	void ToPostfix(); //ïåðåâîä â ïîñòôèêñíóþ ôîðìó
-	double CalcPostfix(); //âû÷èñëåíèå âûðàæåíèÿ â ïîñòôèêñíîé ôîðìå
+	~Calculator() {};                     
+	bool CheckBrackets();      
+	void SetFormula(string str);
+	string GetInfix();   
+	string GetPostfix();
+	void SetExpression(string expr);                   
+	void ToPostfix();                     
+	double CalcPostfix();                 
+	double Calc();
 };

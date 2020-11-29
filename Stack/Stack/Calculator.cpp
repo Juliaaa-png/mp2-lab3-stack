@@ -1,10 +1,17 @@
 #include "Calculator.h"
+#include <string>
+#include <iostream>
+
+using namespace std;
+
 
 bool Calculator::CheckBrackets()
 {
-	for (int i = 0; i < formula.size(); i++)
+	st_c.Clear();
+	st_d.Clear();
+	for (int i = 0; i < infix.size(); i++)
 	{
-		if (formula[i] == '(')
+		if (infix[i] == '(')
 		{
 			if (st_c.Full())
 			{
@@ -15,9 +22,9 @@ bool Calculator::CheckBrackets()
 				st_c.Push('(');
 			}
 		}
-		if (formula[i] == ')')
+		if (infix[i] == ')')
 		{
-			if (st_c.Empty())
+			if (st_c.Empty() == true)
 			{
 				return false;
 			}
@@ -30,144 +37,174 @@ bool Calculator::CheckBrackets()
 	return st_c.Empty();
 }
 
-int Calculator::Priority(char elem)
+void Calculator::SetFormula(string str)
 {
-	if (elem == ')')
+	infix = "";
+	for (unsigned int i = 0; i < str.size(); i++)
 	{
-		return 0;
+		if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/' || str[i] == '^')
+		{
+			infix += " ";
+		}
+		infix += str[i];
 	}
-	if (elem == '+')
+	if (CheckBrackets() != true)
 	{
-		return 1;
+		throw 0;
 	}
-	if (elem == '-')
+	Stack<char> s(infix.size());
+	Stack<double> d(infix.size());
+	st_c = s;
+	st_d = d;
+}
+
+string Calculator::GetInfix()
+{
+	return infix;
+}
+
+string Calculator::GetPostfix()
+{
+	return postfix;
+}
+
+
+void Calculator::SetExpression(string expr)
+{
+	infix = expr;
+	if (CheckBrackets())
 	{
-		return 1;
-	}
-	if (elem == '*')
-	{
-		return 2;
-	}
-	if (elem == '/')
-	{
-		return 2;
-	}
-	if (elem == '^')
-	{
-		return 3;
+		ToPostfix();
 	}
 }
 
 
-void Calculator::ToPostfix()
+int Calculator::Priority(char elem)
 {
-	postfix = "";
-	string src = "(" + infix + ")";
-	unsigned i = 0;
-	st_c.Clear();
-	char elem = '!';
-	while (i < src.size())
+	switch (elem)
 	{
-		if (src[i] == '(')
-		{
-			st_c.Push(src[i]);
-		}
-		if (src[i] >= '0' && src[i] <= '9')
-		{
-			postfix += src[i];
-		}
-		if (src[i] == '+' || src[i] == '-' || src[i] == '*' || src[i] == '/' || src[i] == '^')
+	case  '(': return 0;
+	case  ')': return 1;
+	case  '+': return 2;
+	case  '-': return 2;
+	case  '*': return 3;
+	case  '/': return 3;
+	case  '^': return 4;
+	}
+}
+
+
+void  Calculator::ToPostfix()
+{
+	if (!CheckBrackets())
+	{
+		throw "Wrong number of brackets";
+	}
+	st_c.Clear();
+	st_d.Clear();
+	postfix = " ";
+	string scr = "( " + infix + " )";
+	char elem = ' ! ';
+	unsigned int i = 0;
+	st_c.Clear();
+	while (i < scr.size())
+	{
+		if (scr[i] == '+' || scr[i] == '-' || scr[i] == '*' || scr[i] == '/' || scr[i] == '^')
 		{
 			postfix += " ";
 			elem = st_c.Pop();
-			while (Priority(elem) >= Priority(src[i]))
+			while (Priority(elem) >= Priority(scr[i]))
 			{
 				postfix += elem;
 				elem = st_c.Pop();
 			}
 			st_c.Push(elem);
-			st_c.Push(src[i]);
+			st_c.Push(scr[i]);
 		}
-		if (src[i] == ')')
-		{
-			elem = st_c.Pop();
-			do
+		else
+			if (scr[i] == '(')
 			{
-				postfix += elem;
-				elem = st_c.Pop();
-			} while (elem != ')');
-		}
+				st_c.Push(scr[i]);
+			}
+			else
+				if (scr[i] == ')')
+				{
+					elem = st_c.Pop();
+					while (elem != '(')
+					{
+						postfix += elem;
+						elem = st_c.Pop();
+					}
+				}
+				else
+					if (scr[i] >= '0' && scr[i] <= '9')
+					{
+						postfix += scr[i];
+					}
 		i++;
 	}
+	if (!st_c.Empty())
+	{
+		throw 0;
+	}
 }
-
-double Calculator::CalcPostfix()
+double  Calculator::CalcPostfix()
 {
+	if (!CheckBrackets())
+	{
+		throw "Wrong number of brackets";
+	}
 	st_d.Clear();
-	int unsigned i = 0;
+	char* tmp;
+	unsigned int i = 0;
+	double res = 0;
 	while (i < postfix.size())
 	{
 		if (postfix[i] >= '0' && postfix[i] <= '9')
 		{
-			double tmp = 0;
-			if (postfix[i] >= 48 && postfix[i] <= 57)
-			{
-				tmp += postfix[i] - '0';
-			}
-			st_d.Push(tmp);
+			double d = strtod(&postfix[i], &tmp);
+			int j = tmp - &postfix[i];
+			i += j - 1;
+			st_d.Push(d);
 		}
 		if (postfix[i] == '+' || postfix[i] == '-' || postfix[i] == '*' || postfix[i] == '/' || postfix[i] == '^')
 		{
 			if (st_d.Empty())
 			{
-				throw st_d;
+				throw "Wrong";
 			}
 			else
 			{
-				double k2 = st_d.Pop();
-				double k1 = st_d.Pop();
-				switch (postfix[i])
-				{
+				double op1, op2;
+				op2 = st_d.Pop();
+				op1 = st_d.Pop();
+				switch (postfix[i]) {
 				case '+':
-				{
-					st_d.Push(k2 + k1);
+					res = op1 + op2; break;
+				case '-':
+					res = op1 - op2; break;
+				case '*':
+					res = op1 * op2; break;
+				case '/':
+					res = op1 / op2; break;
+				case '^':
+					res = pow(op1, op2); break;
+				default: if (formula[i] != ' ')
+					st_d.Push(formula[i] - '0');
 					break;
 				}
-				case'-':
-				{
-					st_d.Push(k2 - k1);
-					break;
-				}
-				case'*':
-				{
-					st_d.Push(k2 * k1);
-					break;
-				}
-				case'/':
-				{
-					st_d.Push(k2 / k1);
-					break;
-				}
-				/*case'^':
-				{
-					st_d.Push(k2 ^ k1);
-					break;
-				}*/
-				}
-			}
-			i++;
-			if (st_d.Empty())
-			{
-				throw st_d;
-			}
-			else
-			{
-				st_d.Pop();
-				if (st_d.Empty())
-				{
-					return st_d.Pop();
-				}
+				st_d.Push(res);
 			}
 		}
+		i++;
+	}
+	if (st_d.Empty())
+	{
+		throw "Wrong";
+	}
+	else
+	{
+		res = st_d.Pop();
+		return res;
 	}
 }
