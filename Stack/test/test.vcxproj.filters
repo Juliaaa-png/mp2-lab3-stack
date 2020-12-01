@@ -15,18 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="gtest-all.cc">
+    <ClCompile Include="..\..\..\миша\mp2-lab3-stack\Test_Stack\gtest-all.cc">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="test_main.cpp">
+    <ClCompile Include="..\..\..\миша\mp2-lab3-stack\Test_Stack\test_main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="test_stack.cpp">
+    <ClCompile Include="..\..\..\миша\mp2-lab3-stack\Test_Stack\test_stack.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\миша\mp2-lab3-stack\Test_Stack\Test_Calculator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="gtest.h">
+    <ClInclude Include="..\..\..\миша\mp2-lab3-stack\Test_Stack\gtest.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

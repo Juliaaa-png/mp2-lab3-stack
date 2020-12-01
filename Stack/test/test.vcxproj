@@ -139,12 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="gtest-all.cc" />
-    <ClCompile Include="test_main.cpp" />
-    <ClCompile Include="test_stack.cpp" />
+    <ClCompile Include="..\..\..\миша\mp2-lab3-stack\Test_Stack\gtest-all.cc" />
+    <ClCompile Include="..\..\..\миша\mp2-lab3-stack\Test_Stack\Test_Calculator.cpp" />
+    <ClCompile Include="..\..\..\миша\mp2-lab3-stack\Test_Stack\test_main.cpp" />
+    <ClCompile Include="..\..\..\миша\mp2-lab3-stack\Test_Stack\test_stack.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="gtest.h" />
+    <ClInclude Include="..\..\..\миша\mp2-lab3-stack\Test_Stack\gtest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

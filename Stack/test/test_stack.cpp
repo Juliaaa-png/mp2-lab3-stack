@@ -35,17 +35,18 @@ TEST(Stack, the_copied_stack_is_the_same_as_the_original_one)
 	EXPECT_EQ(s.Pop(), copy.Pop());
 }
 
-/*TEST(Stack, can_assign_stacks_of_the_same_data_types_and_MaxSize)
+TEST(Stack, can_assign_stacks_of_the_same_data_types_and_MaxSize)
 {
 	Stack<int> s1(5);
 	Stack<int> s2(5);
 	s1.Push(5);
 	s1.Push(7);
 	s2.Push(3);
-	ASSERT_NO_THROW(s2 = s1);
+	s2 = s1;
 	EXPECT_EQ(s1.Size(), s2.Size());
 	EXPECT_EQ(s1.Pop(), s2.Pop());
 }
+/*
 TEST(Stack, can_assign_stacks_of_the_same_data_types_and_different_MaxSize)
 {
 	Stack<int> s1(8);
