@@ -207,4 +207,6 @@ double  Calculator::CalcPostfix()
 		res = st_d.Pop();
 		return res;
 	}
+
+	
 }
