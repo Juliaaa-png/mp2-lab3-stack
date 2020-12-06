@@ -32,5 +32,4 @@ public:
 	void SetExpression(string expr);                   
 	void ToPostfix();                     
 	double CalcPostfix();                 
-	double Calc();
 };
